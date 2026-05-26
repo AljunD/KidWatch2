@@ -1,0 +1,122 @@
+openapi: 3.0.0
+info:
+  title: KidWatch2 API
+  version: 1.0.0
+  description: API documentation for Teacher Web Portal (KidWatch2)
+
+servers:
+  - url: http://localhost:8000/api
+
+paths:
+  /teachers:
+    get:
+      summary: List all teachers
+      tags: [Teachers]
+      responses:
+        '200':
+          description: Successful response
+    post:
+      summary: Register a new teacher
+      tags: [Teachers]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+      responses:
+        '201':
+          description: Teacher created
+
+  /students:
+    get:
+      summary: List all students
+      tags: [Students]
+      responses:
+        '200':
+          description: Successful response
+    post:
+      summary: Register a new student under a guardian
+      tags: [Students]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                guardian_id:
+                  type: integer
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                sex:
+                  type: string
+                  enum: [Male, Female]
+                date_of_birth:
+                  type: string
+                  format: date
+      responses:
+        '201':
+          description: Student created
+
+  /progress-records:
+    post:
+      summary: Create a progress record for a student
+      tags: [ProgressRecords]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                student_id:
+                  type: integer
+                teacher_id:
+                  type: integer
+                assessment_date:
+                  type: string
+                  format: date
+                assessment_number:
+                  type: integer
+                status:
+                  type: string
+                  enum: [evaluation_pending, evaluation_completed, assessment_completed]
+      responses:
+        '201':
+          description: Progress record created
+
+  /domains:
+    post:
+      summary: Add a domain activity to a progress record
+      tags: [Domains]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                progress_record_id:
+                  type: integer
+                domain:
+                  type: string
+                  enum: [gross_motor, fine_motor, self_help, receptive_language, expressive_language, cognitive, social_emotional]
+                activity:
+                  type: string
+                materials_and_procedure:
+                  type: string
+      responses:
+        '201':
+          description: Domain created

@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+        // SESSIONS
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->text('payload');
+            $table->integer('last_activity')->index();
+        });
+
         // USERS
         Schema::create('users', function (Blueprint $table) {
             $table->id();
@@ -172,10 +182,34 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
+
+        // JOBS
+        Schema::create('jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('queue')->index();
+            $table->longText('payload');
+            $table->tinyInteger('attempts')->unsigned();
+            $table->unsignedInteger('reserved_at')->nullable();
+            $table->unsignedInteger('available_at');
+            $table->unsignedInteger('created_at');
+        });
+
+        // FAILED_JOBS
+        Schema::create('failed_jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('uuid')->unique();
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->useCurrent();
+        });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists('failed_jobs');
+        Schema::dropIfExists('jobs');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('personal_access_tokens');
         Schema::dropIfExists('logs');
@@ -188,5 +222,6 @@ return new class extends Migration {
         Schema::dropIfExists('guardians');
         Schema::dropIfExists('teachers');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('sessions');
     }
 };
