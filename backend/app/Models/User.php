@@ -17,6 +17,9 @@ class User extends Authenticatable
         'role',
     ];
 
+    /**
+     * Relationships
+     */
     public function teacher()
     {
         return $this->hasOne(Teacher::class);
@@ -30,10 +33,5 @@ class User extends Authenticatable
     public function logs()
     {
         return $this->hasMany(Log::class);
-    }
-
-    public function tokens()
-    {
-        return $this->hasMany(PersonalAccessToken::class);
     }
 }

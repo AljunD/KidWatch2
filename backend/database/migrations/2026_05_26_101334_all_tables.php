@@ -162,17 +162,16 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // PERSONAL_ACCESS_TOKENS
+        // PERSONAL_ACCESS_TOKENS (Sanctum)
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->string('tokenable_type');
-            $table->unsignedBigInteger('tokenable_id');
+            $table->morphs('tokenable'); // tokenable_type + tokenable_id
             $table->string('name');
-            $table->string('token')->unique();
+            $table->string('token', 64)->unique();
+            $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
 
         // PASSWORD_RESET_TOKENS
@@ -183,33 +182,24 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // JOBS
-        Schema::create('jobs', function (Blueprint $table) {
-            $table->id();
-            $table->string('queue')->index();
-            $table->longText('payload');
-            $table->tinyInteger('attempts')->unsigned();
-            $table->unsignedInteger('reserved_at')->nullable();
-            $table->unsignedInteger('available_at');
-            $table->unsignedInteger('created_at');
+        // CACHE TABLES
+        Schema::create('cache', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->mediumText('value');
+            $table->bigInteger('expiration')->index();
         });
 
-        // FAILED_JOBS
-        Schema::create('failed_jobs', function (Blueprint $table) {
-            $table->id();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+        Schema::create('cache_locks', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->string('owner');
+            $table->bigInteger('expiration')->index();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('failed_jobs');
-        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('cache_locks');
+        Schema::dropIfExists('cache');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('personal_access_tokens');
         Schema::dropIfExists('logs');
