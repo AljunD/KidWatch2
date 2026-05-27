@@ -37,7 +37,7 @@ return new class extends Migration {
             $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->string('contact_number')->nullable();
-            $table->text('address')->nullable();
+            $table->text('address');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -49,6 +49,8 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
+            $table->string('contact_number');
+            $table->text('address');
             $table->string('relationship_to_child');
             $table->timestamps();
             $table->softDeletes();

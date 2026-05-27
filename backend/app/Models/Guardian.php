@@ -15,14 +15,22 @@ class Guardian extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'contact_number',
+        'address',
         'relationship_to_child',
     ];
 
+    /**
+     * Relationship: Guardian belongs to a User
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Relationship: Guardian has many Students
+     */
     public function students()
     {
         return $this->hasMany(Student::class);
