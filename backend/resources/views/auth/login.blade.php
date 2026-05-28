@@ -8,7 +8,7 @@
     <p class="text-gray-400 text-lg font-light">Please sign in with your credentials</p>
 </div>
 
-<form method="POST" action="{{ route('login.submit') }}" class="space-y-6">
+<form method="POST" action="{{ route('auth.login.submit') }}" class="space-y-6">
     @csrf
 
     {{-- Email --}}
