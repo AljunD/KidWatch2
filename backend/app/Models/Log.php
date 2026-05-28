@@ -10,6 +10,9 @@ class Log extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // Explicit table name to match migration
+    protected $table = 'logs';
+
     protected $fillable = [
         'user_id',
         'action',
@@ -18,6 +21,11 @@ class Log extends Model
         'details',
     ];
 
+    /**
+     * Relationships
+     */
+
+    // Each log entry belongs to one user
     public function user()
     {
         return $this->belongsTo(User::class);

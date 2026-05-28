@@ -36,6 +36,7 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
+            $table->enum('sex', ['Male','Female']);
             $table->string('contact_number')->nullable();
             $table->text('address');
             $table->timestamps();
@@ -49,6 +50,7 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
+            $table->enum('sex', ['Male','Female']);
             $table->string('contact_number');
             $table->text('address');
             $table->string('relationship_to_child');
@@ -56,8 +58,8 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // STUDENTS
-        Schema::create('students', function (Blueprint $table) {
+        // CHILDS
+        Schema::create('childs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('guardian_id')->constrained('guardians');
             $table->string('first_name');
@@ -87,7 +89,7 @@ return new class extends Migration {
         // PROGRESS_RECORDS
         Schema::create('progress_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students');
+            $table->foreignId('child_id')->constrained('childs'); // back to child_id
             $table->foreignId('teacher_id')->constrained('teachers');
             $table->date('assessment_date');
             $table->tinyInteger('assessment_number');
@@ -115,7 +117,7 @@ return new class extends Migration {
         Schema::create('domain_results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('domain_id')->constrained('domains');
-            $table->enum('present', ['check','cross']);
+            $table->enum('present', ['check','hypen']); // updated enum
             $table->text('comments')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -164,10 +166,10 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // PERSONAL_ACCESS_TOKENS (Sanctum)
+        // PERSONAL_ACCESS_TOKENS
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable'); // tokenable_type + tokenable_id
+            $table->morphs('tokenable');
             $table->string('name');
             $table->string('token', 64)->unique();
             $table->text('abilities')->nullable();
@@ -184,7 +186,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // CACHE TABLES
+        // CACHE
         Schema::create('cache', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
@@ -210,7 +212,7 @@ return new class extends Migration {
         Schema::dropIfExists('domain_results');
         Schema::dropIfExists('domains');
         Schema::dropIfExists('progress_records');
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('childs'); 
         Schema::dropIfExists('guardians');
         Schema::dropIfExists('teachers');
         Schema::dropIfExists('users');

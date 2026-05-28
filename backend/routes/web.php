@@ -96,9 +96,20 @@ Route::prefix('guardians')->middleware(['auth', 'verified'])->group(function () 
     // Edit guardian
     Route::get('/{id}/edit', [GuardianController::class, 'edit'])->name('guardians.edit');
     Route::put('/{id}', [GuardianController::class, 'update'])->name('guardians.update');
-    Route::get('/{id}/create-student', [GuardianController::class, 'createStudent'])->name('guardians.create-student');
-    
+
+    // Create child under guardian
+    Route::get('/{id}/create-child', [GuardianController::class, 'createChild'])->name('guardians.create-child');
 
     // Soft delete guardian
     Route::delete('/{id}', [GuardianController::class, 'destroy'])->name('guardians.destroy');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Static Archive Child Flow (Preview Only)
+|--------------------------------------------------------------------------
+*/
+// Static Archive Child Flow (Preview Only)
+Route::get('/child/archive', function () {
+    return view('guardians.archive-child'); // <-- include folder name
+})->middleware(['auth', 'verified'])->name('child.archive.view');

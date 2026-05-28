@@ -40,7 +40,7 @@
             <div class="grid grid-cols-2 gap-6 text-center">
                 <div>
                     <p class="text-3xl font-bold text-gray-900">12</p>
-                    <p class="text-gray-500 text-sm">Students</p>
+                    <p class="text-gray-500 text-sm">Children</p>
                 </div>
                 <div>
                     <p class="text-3xl font-bold text-gray-900">3</p>

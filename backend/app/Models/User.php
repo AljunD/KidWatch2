@@ -14,6 +14,9 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, SoftDeletes, Notifiable;
 
+    // Explicit table name to match migration
+    protected $table = 'users';
+
     /**
      * Mass assignable attributes
      */
@@ -62,5 +65,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function logs()
     {
         return $this->hasMany(Log::class);
+    }
+
+    public function sessions()
+    {
+        return $this->hasMany(Session::class);
+    }
+
+    public function personalAccessTokens()
+    {
+        return $this->morphMany(PersonalAccessToken::class, 'tokenable');
+    }
+
+    public function passwordResetTokens()
+    {
+        return $this->hasMany(PasswordResetToken::class, 'email', 'email');
     }
 }

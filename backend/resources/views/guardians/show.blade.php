@@ -90,31 +90,31 @@
     </div>
 </div>
 
-<!-- Linked Students Section -->
+<!-- Linked Children Section -->
 <div class="bg-white shadow-lg rounded-2xl p-8 space-y-6 border border-gray-100">
-    <h2 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Linked Students</h2>
+    <h2 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Linked Children</h2>
     <div class="divide-y divide-gray-200">
-        <!-- Example Student -->
+        <!-- Example Child -->
         <div class="py-4 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <img src="https://via.placeholder.com/64" alt="Student Image" class="w-16 h-16 rounded-full object-cover">
+                <img src="https://via.placeholder.com/64" alt="Child Image" class="w-16 h-16 rounded-full object-cover">
                 <div>
                     <p class="text-sm font-bold text-gray-900">Juan Dela Cruz</p>
                 </div>
             </div>
-            <a href="/students/1" 
+            <a href="/children/1" 
                class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-xl shadow-sm hover:bg-blue-700 transition active:scale-95">
                 View Profile
             </a>
         </div>
         <div class="py-4 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <img src="https://via.placeholder.com/64" alt="Student Image" class="w-16 h-16 rounded-full object-cover">
+                <img src="https://via.placeholder.com/64" alt="Child Image" class="w-16 h-16 rounded-full object-cover">
                 <div>
                     <p class="text-sm font-bold text-gray-900">Ana Dela Cruz</p>
                 </div>
             </div>
-            <a href="/students/2" 
+            <a href="/children/2" 
                class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-xl shadow-sm hover:bg-blue-700 transition active:scale-95">
                 View Profile
             </a>

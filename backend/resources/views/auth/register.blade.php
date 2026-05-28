@@ -44,6 +44,21 @@
         @enderror
     </div>
 
+    {{-- Sex --}}
+    <div>
+        <label for="sex" class="block text-sm font-semibold text-gray-600 mb-2">Sex</label>
+        <select id="sex" name="sex"
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 focus:border-gray-900 focus:ring-2 focus:ring-gray-200 outline-none transition">
+            <option value="" disabled selected>Select sex</option>
+            <option value="Male" {{ old('sex') == 'Male' ? 'selected' : '' }}>Male</option>
+            <option value="Female" {{ old('sex') == 'Female' ? 'selected' : '' }}>Female</option>
+        </select>
+        @error('sex')
+            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+        @enderror
+    </div>
+
+
     {{-- Contact Number --}}
     <div>
         <label for="contact_number" class="block text-sm font-semibold text-gray-600 mb-2">Contact Number</label>
@@ -103,7 +118,7 @@
 <div class="text-center mt-6">
     <p class="text-sm text-gray-500">
         Already registered?
-        <a href="{{ route('login') }}" class="font-medium text-gray-900 hover:text-black underline underline-offset-4">
+        <a href="{{ route('auth.login.form') }}" class="font-medium text-gray-900 hover:text-black underline underline-offset-4">
             Sign in here
         </a>
     </p>

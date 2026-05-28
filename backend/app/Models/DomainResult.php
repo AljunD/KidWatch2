@@ -10,12 +10,20 @@ class DomainResult extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // Explicit table name to match migration
+    protected $table = 'domain_results';
+
     protected $fillable = [
         'domain_id',
-        'present',
+        'present',   // enum: check | hypen
         'comments',
     ];
 
+    /**
+     * Relationships
+     */
+
+    // Each result belongs to one domain
     public function domain()
     {
         return $this->belongsTo(Domain::class);

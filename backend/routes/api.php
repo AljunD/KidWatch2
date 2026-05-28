@@ -22,7 +22,7 @@ Route::prefix('/v1')->group(function () {
         Route::post('/guardian/logout', [AuthController::class, 'logout']);
         Route::get('/guardian/profile', [GuardianController::class, 'profile']);
         Route::get('/guardian/views', [GuardianController::class, 'views']);
-        Route::get('/guardian/students', [GuardianController::class, 'students']);
-        Route::get('/guardian/students/{id}', [GuardianController::class, 'showStudent']);
+        Route::get('/guardian/children', [GuardianController::class, 'children']);
+        Route::get('/guardian/children/{id}', [GuardianController::class, 'showChild']);
     });
 });

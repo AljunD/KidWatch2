@@ -102,14 +102,14 @@ class GuardianController extends Controller
         // $guardian->delete(); // with SoftDeletes trait, this sets deleted_at
     }
     /**
-     * Show the form for creating a student linked to the specified guardian.
+     * Show the form for creating a child linked to the specified guardian.
      */
-    public function createStudent($id)
+    public function createChild($id)
     {
         // Static placeholder
-        return view('guardians.create-student');
+        return view('guardians.create-child');
 
         // Later: $guardian = Guardian::findOrFail($id);
-        // return view('guardians.create-student', compact('guardian'));
+        // return view('guardians.create-child', compact('guardian'));
     }
 }

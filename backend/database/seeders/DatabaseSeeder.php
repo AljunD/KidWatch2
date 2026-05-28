@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Teacher;
 use App\Models\Guardian;
-use App\Models\Student;
+use App\Models\Child;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,18 +19,19 @@ class DatabaseSeeder extends Seeder
         // Teacher user + profile
         // -------------------------------
         $teacherUser = User::create([
-            'email'    => 'aljundalman12@gmail.com',
+            'email'    => 'aljundalman15@gmail.com',
             'password' => bcrypt('Password123@'),
             'role'     => 'teacher',
         ]);
 
         Teacher::create([
-            'user_id'       => $teacherUser->id,
-            'first_name'    => 'Aljun',
-            'middle_name'   => 'Bequillos',
-            'last_name'     => 'Dalman',
-            'contact_number'=> '09192888483',
-            'address'       => 'Quezon City',
+            'user_id'        => $teacherUser->id,
+            'first_name'     => 'Aljun',
+            'middle_name'    => 'Bequillos',
+            'last_name'      => 'Dalman',
+            'sex'            => 'Male',
+            'contact_number' => '09192888483',
+            'address'        => 'Quezon City',
         ]);
 
         // -------------------------------
@@ -47,13 +48,16 @@ class DatabaseSeeder extends Seeder
             'first_name'           => 'Isabella',
             'middle_name'          => 'Cruz',
             'last_name'            => 'Chowalter',
+            'sex'                  => 'Female',
+            'contact_number'       => '09283746501',
+            'address'              => 'Antipolo City',
             'relationship_to_child'=> 'Mother',
         ]);
 
         // -------------------------------
-        // Student linked to guardian
+        // Child linked to guardian
         // -------------------------------
-        Student::create([
+        Child::create([
             'guardian_id'        => $guardian->id,
             'first_name'         => 'Juan',
             'middle_name'        => 'Carlos',
@@ -74,7 +78,7 @@ class DatabaseSeeder extends Seeder
             'mothers_education'  => 'College',
             'number_of_siblings' => 2,
             'birth_order'        => 1,
-            'photo_path'         => 'storage/photos/students/juan.jpg',
+            'photo_path'         => 'storage/photos/childs/juan.jpg', 
         ]);
     }
 }

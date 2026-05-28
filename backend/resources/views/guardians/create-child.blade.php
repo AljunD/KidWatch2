@@ -1,6 +1,6 @@
 @extends('components.app')
 
-@section('title', 'Add Student')
+@section('title', 'Add Child')
 
 @section('content')
 <div class="max-w-4xl mx-auto my-10">
@@ -10,8 +10,8 @@
         <div class="px-8 py-8 bg-gray-50 border-b border-gray-100">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Add New Student</h1>
-                    <p class="text-sm text-gray-500 mt-1">Complete the student profile and family information.</p>
+                    <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Add New Child</h1>
+                    <p class="text-sm text-gray-500 mt-1">Complete the child profile and family information.</p>
                 </div>
             </div>
         </div>
@@ -20,22 +20,35 @@
         <div id="success-message" class="hidden p-12 text-center">
             <div class="max-w-md mx-auto">
                 <div class="mb-6 bg-green-100 text-green-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Student Added Successfully</h3>
-                <p class="text-gray-600 mb-8">The student profile has been successfully created and linked to the guardian.</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Child Added Successfully</h3>
+                <p class="text-gray-600 mb-8">The child profile has been successfully created and linked to the guardian.</p>
                 <a href="{{ route('guardians.index') }}" 
-                   class="inline-block w-full px-8 py-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition transform active:scale-95">
+                class="inline-block w-full px-8 py-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition transform active:scale-95">
                     Return to Guardians
+                </a>
+            </div>
+        </div>
+
+        <!-- Failed Message -->
+        <div id="failed-message" class="hidden p-12 text-center">
+            <div class="max-w-md mx-auto">
+                <div class="mb-6 bg-red-100 text-red-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✕</div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Child Creation Failed</h3>
+                <p class="text-gray-600 mb-8">Something went wrong while creating the child profile. Please try again.</p>
+                <a href="{{ route('guardians.index') }}" 
+                class="inline-block w-full px-8 py-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition transform active:scale-95">
+                    Back to Guardians
                 </a>
             </div>
         </div>
 
         <!-- Scrollable Form Area -->
         <div id="form-container" class="p-8 md:p-12 max-h-[calc(100vh-240px)] overflow-y-auto custom-scroll">
-            <form id="createStudentForm" class="space-y-10">
+            <form id="createChildForm" class="space-y-10">
 
-                <!-- Student Basic Information -->
+                <!-- Child Basic Information -->
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900 mb-1">Student Profile</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-1">Child Profile</h2>
                     <p class="text-gray-500">Sociodemographic and personal information.</p>
                 </div>
 
@@ -43,22 +56,22 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">First Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="studentFirst" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="e.g. Juan">
+                            <input type="text" id="childFirst" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="e.g. Juan">
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Middle Name</label>
-                            <input type="text" id="studentMiddle" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="e.g. Cruz">
+                            <input type="text" id="childMiddle" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="e.g. Cruz">
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Last Name <span class="text-red-500">*</span></label>
-                            <input type="text" id="studentLast" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="e.g. Dela Cruz">
+                            <input type="text" id="childLast" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="e.g. Dela Cruz">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Sex <span class="text-red-500">*</span></label>
-                            <select id="studentSex" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none appearance-none bg-white">
+                            <select id="childSex" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none appearance-none bg-white">
                                 <option value="">Select Sex</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -66,29 +79,29 @@
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Date of Birth <span class="text-red-500">*</span></label>
-                            <input type="date" id="studentDob" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
+                            <input type="date" id="childDob" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
                         </div>
                     </div>
 
-                    <!-- Student Address -->
+                    <!-- Child Address -->
                     <div class="space-y-4">
-                        <label class="text-sm font-semibold text-gray-700">Student Address</label>
+                        <label class="text-sm font-semibold text-gray-700">Child Address</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="text-sm text-gray-600">Barangay</label>
-                                <input type="text" id="studentBarangay" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Barangay">
+                                <input type="text" id="childBarangay" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Barangay">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm text-gray-600">Municipality/City</label>
-                                <input type="text" id="studentMunicipality" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Municipality/City">
+                                <input type="text" id="childMunicipality" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Municipality/City">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm text-gray-600">Province</label>
-                                <input type="text" id="studentProvince" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Province">
+                                <input type="text" id="childProvince" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Province">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm text-gray-600">Region</label>
-                                <input type="text" id="studentRegion" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Region">
+                                <input type="text" id="childRegion" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Region">
                             </div>
                         </div>
                     </div>
@@ -96,7 +109,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Child’s Handedness</label>
-                            <select id="studentHandedness" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none appearance-none bg-white">
+                            <select id="childHandedness" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none appearance-none bg-white">
                                 <option value="">Select Handedness</option>
                                 <option value="right">Right</option>
                                 <option value="left">Left</option>
@@ -107,11 +120,11 @@
                         <div class="flex items-center space-x-6 pt-8">
                             <label class="text-sm font-semibold text-gray-700">Is the child presently studying?</label>
                             <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" id="studentStudyingYes" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition">
+                                <input type="checkbox" id="childStudyingYes" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition">
                                 <span class="text-sm font-medium text-gray-700">Yes</span>
                             </label>
                             <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" id="studentStudyingNo" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition">
+                                <input type="checkbox" id="childStudyingNo" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition">
                                 <span class="text-sm font-medium text-gray-700">No</span>
                             </label>
                         </div>
@@ -119,7 +132,7 @@
 
                     <div id="schoolNameField" class="space-y-2 hidden">
                         <label class="text-sm font-semibold text-gray-700">School / Learning Center / Day Care</label>
-                        <input type="text" id="studentSchool" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="School name">
+                        <input type="text" id="childSchool" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="School name">
                     </div>
                 </div>
 
@@ -151,17 +164,17 @@
                 <div class="bg-blue-50 p-6 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-6 border border-blue-100">
                     <div class="space-y-2">
                         <label class="text-sm font-semibold text-blue-900">Number of Siblings</label>
-                        <input type="number" id="siblings" class="w-full border-blue-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
+                        <input type="number" id="childSiblings" class="w-full border-blue-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-semibold text-blue-900">Birth Order</label>
-                        <input type="number" id="birthOrder" class="w-full border-blue-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
+                        <input type="number" id="childBirthOrder" class="w-full border-blue-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
                     </div>
                 </div>
 
                 <!-- Photo Upload -->
                 <div class="space-y-4">
-                    <label class="text-sm font-semibold text-gray-700">Student Photo Identification</label>
+                    <label class="text-sm font-semibold text-gray-700">Child Photo Identification</label>
                     <div class="flex items-center space-x-6">
                         <div class="flex-shrink-0">
                             <div class="w-32 h-32 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden">
@@ -182,7 +195,7 @@
                        class="px-8 py-4 text-gray-600 font-bold hover:text-gray-900 transition">Cancel</a>
                     <button type="button" id="saveBtn"
                             class="px-12 py-4 bg-green-600 text-white font-bold rounded-xl shadow-lg shadow-green-100 hover:bg-green-700 transition transform active:scale-95">
-                        Save Student
+                        Save Child
                     </button>
                 </div>
             </form>
@@ -193,14 +206,26 @@
 <script>
     const formContainer = document.getElementById('form-container');
     const successMessage = document.getElementById('success-message');
+    const failedMessage = document.getElementById('failed-message');
     const saveBtn = document.getElementById('saveBtn');
 
-    // Save Button - Show Success Message
+    // Save Button - Show Success or Failed Message
     saveBtn.addEventListener('click', () => {
+        // Hide form
         formContainer.classList.add('hidden');
-        successMessage.classList.remove('hidden');
-        
-        // Optional: Scroll to top smoothly
+
+        // Simulate outcome (replace with actual AJAX/fetch in production)
+        const isSuccess = true; // <-- set to false to test failed message
+
+        if (isSuccess) {
+            successMessage.classList.remove('hidden');
+            failedMessage.classList.add('hidden');
+        } else {
+            failedMessage.classList.remove('hidden');
+            successMessage.classList.add('hidden');
+        }
+
+        // Scroll to top smoothly
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
@@ -218,9 +243,9 @@
     });
 
     // Studying Checkbox Logic
-    const yesBox = document.getElementById('studentStudyingYes');
-    const noBox = document.getElementById('studentStudyingNo');
-    const schoolField = document.getElementById('schoolNameField');
+    const yesBox = document.getElementById('childStudyingYes');
+    const noBox = document.getElementById('childStudyingNo');
+    const schoolField = document.getElementById('childSchool');
 
     yesBox.addEventListener('change', () => {
         if (yesBox.checked) {

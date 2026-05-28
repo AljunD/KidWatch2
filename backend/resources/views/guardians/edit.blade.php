@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <!-- Success Message (Hidden by default) -->
+        <!-- Success Message -->
         <div id="success-message" class="hidden p-12 text-center">
             <div class="max-w-md mx-auto">
                 <div class="mb-6 bg-green-100 text-green-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
@@ -25,6 +25,19 @@
                 <a href="{{ route('guardians.index') }}" 
                    class="inline-block w-full px-8 py-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition transform active:scale-95">
                     Return to Guardians List
+                </a>
+            </div>
+        </div>
+
+        <!-- Failed Message -->
+        <div id="failed-message" class="hidden p-12 text-center">
+            <div class="max-w-md mx-auto">
+                <div class="mb-6 bg-red-100 text-red-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✕</div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Update Failed</h3>
+                <p class="text-gray-600 mb-8">Something went wrong while updating the guardian profile. Please try again.</p>
+                <a href="{{ route('guardians.index') }}" 
+                   class="inline-block w-full px-8 py-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition transform active:scale-95">
+                    Back to Guardians
                 </a>
             </div>
         </div>
@@ -79,6 +92,15 @@
                             <label class="text-sm font-semibold text-gray-700">Last Name</label>
                             <input type="text" id="guardianLast" value="{{ old('last_name', $guardian->last_name ?? '') }}" 
                                    class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border">
+                        </div>
+                        <div class="space-y-2 mt-6">
+                            <label class="text-sm font-semibold text-gray-700">Sex</label>
+                            <select id="guardianSex" name="sex"
+                                    class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border">
+                                <option value="" disabled>Select sex</option>
+                                <option value="Male" {{ old('sex', $guardian->sex ?? '') == 'Male' ? 'selected' : '' }}>Male</option>
+                                <option value="Female" {{ old('sex', $guardian->sex ?? '') == 'Female' ? 'selected' : '' }}>Female</option>
+                            </select>
                         </div>
                     </div>
 
@@ -136,15 +158,27 @@
 <script>
     const formContainer = document.getElementById('form-container');
     const successMessage = document.getElementById('success-message');
+    const failedMessage = document.getElementById('failed-message');
     const updateBtn = document.getElementById('updateBtn');
 
     updateBtn.addEventListener('click', () => {
-        // Simulate save (replace with actual AJAX/fetch in production)
+        // Hide form
         formContainer.classList.add('hidden');
-        successMessage.classList.remove('hidden');
-        
-        // Optional: Scroll to top
+
+        // Simulate outcome (replace with actual AJAX/fetch in production)
+        const isSuccess = false; // toggle this for preview
+
+        if (isSuccess) {
+            successMessage.classList.remove('hidden');
+            failedMessage.classList.add('hidden');
+        } else {
+            failedMessage.classList.remove('hidden');
+            successMessage.classList.add('hidden');
+        }
+
+        // Scroll to top for visibility
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 </script>
+
 @endsection

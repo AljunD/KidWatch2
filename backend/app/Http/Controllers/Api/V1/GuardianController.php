@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Student;
+use App\Models\Child;
 
 class GuardianController extends Controller
 {
@@ -14,19 +14,19 @@ class GuardianController extends Controller
         return response()->json($request->user()->guardian, 200);
     }
 
-    // GET /guardian/students
-    public function students(Request $request)
+    // GET /guardian/children
+    public function children(Request $request)
     {
-        return response()->json($request->user()->guardian->students, 200);
+        return response()->json($request->user()->guardian->children, 200);
     }
 
-    // GET /guardian/students/{id}
-    public function showStudent(Request $request, $id)
+    // GET /guardian/children/{id}
+    public function showChild(Request $request, $id)
     {
-        $student = Student::where('guardian_id', $request->user()->guardian->id)
-                          ->findOrFail($id);
+        $child = Child::where('guardian_id', $request->user()->guardian->id)
+                      ->findOrFail($id);
 
-        return response()->json($student, 200);
+        return response()->json($child, 200);
     }
 
     // GET /guardian/views
@@ -38,16 +38,16 @@ class GuardianController extends Controller
             return response()->json(['error' => 'Guardian profile not found'], 404);
         }
 
-        // Load guardian with related students and their progress records/domains/scores
+        // Load guardian with related children and their progress records/domains/scores
         $guardian->load([
-            'students.progressRecords.teacher',
-            'students.progressRecords.domains.domainResults',
-            'students.progressRecords.domainScores'
+            'children.progressRecords.teacher',
+            'children.progressRecords.domains.domainResults',
+            'children.progressRecords.domainScores'
         ]);
 
         return response()->json([
             'profile'  => $guardian,
-            'students' => $guardian->students
+            'children' => $guardian->children
         ], 200);
     }
 }

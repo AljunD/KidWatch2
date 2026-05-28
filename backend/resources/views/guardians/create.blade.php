@@ -30,7 +30,7 @@
             <div class="max-w-md mx-auto">
                 <div class="mb-6 bg-green-100 text-green-700 w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">✓</div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-2">Registration Complete</h3>
-                <p class="text-gray-600 mb-8">The guardian account, guardian profile, and student profile have been successfully created.</p>
+                <p class="text-gray-600 mb-8">The guardian account, guardian profile, and child profile have been successfully created.</p>
                 <a href="{{ route('guardians.index') }}" class="inline-block w-full px-8 py-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition transform active:scale-95">
                     Done
                 </a>
@@ -60,6 +60,15 @@
                         <label class="text-sm font-semibold text-gray-700">Last Name</label>
                         <input type="text" id="guardianLast" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="e.g. Santos">
                     </div>
+                </div>
+                    <div class="space-y-2 mt-6">
+                        <label class="text-sm font-semibold text-gray-700">Sex</label>
+                        <select id="guardianSex" name="sex"
+                            class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border">
+                        <option value="" disabled>Select sex</option>
+                        <option value="Male" {{ old('sex', $guardian->sex ?? '') == 'Male' ? 'selected' : '' }}>Male</option>
+                        <option value="Female" {{ old('sex', $guardian->sex ?? '') == 'Female' ? 'selected' : '' }}>Female</option>
+                    </select>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,10 +131,10 @@
                 </div>
             </div>
 
-            <!-- Step 2: Student Profile -->
+            <!-- Step 2: child Profile -->
             <div id="step2" class="space-y-10 hidden">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900">Student Profile</h2>
+                    <h2 class="text-2xl font-bold text-gray-900">Child Profile</h2>
                     <p class="text-gray-500 mt-1">Sociodemographic and family background.</p>
                 </div>
 
@@ -133,51 +142,51 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">First Name</label>
-                            <input type="text" id="studentFirst" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
+                            <input type="text" id="childFirst" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Middle Name</label>
-                            <input type="text" id="studentMiddle" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
+                            <input type="text" id="childMiddle" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Last Name</label>
-                            <input type="text" id="studentLast" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
+                            <input type="text" id="childLast" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Sex</label>
-                            <select id="studentSex" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none appearance-none bg-white">
+                            <select id="childSex" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none appearance-none bg-white">
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Date of Birth</label>
-                            <input type="date" id="studentDob" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
+                            <input type="date" id="childDob" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none">
                         </div>
                     </div>
 
-                    <!-- Student Address -->
+                    <!-- Child Address -->
                     <div class="space-y-4">
-                        <label class="text-sm font-semibold text-gray-700">Student Address</label>
+                        <label class="text-sm font-semibold text-gray-700">Child Address</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="text-sm text-gray-600">Barangay</label>
-                                <input type="text" id="studentBarangay" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Barangay">
+                                <input type="text" id="childBarangay" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Barangay">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm text-gray-600">Municipality/City</label>
-                                <input type="text" id="studentMunicipality" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Municipality/City">
+                                <input type="text" id="childMunicipality" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Municipality/City">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm text-gray-600">Province</label>
-                                <input type="text" id="studentProvince" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Province">
+                                <input type="text" id="childProvince" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Province">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm text-gray-600">Region</label>
-                                <input type="text" id="studentRegion" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Region">
+                                <input type="text" id="childRegion" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="Region">
                             </div>
                         </div>
                     </div>
@@ -185,7 +194,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-sm font-semibold text-gray-700">Child’s Handedness</label>
-                            <select id="studentHandedness" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none appearance-none bg-white">
+                            <select id="childHandedness" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 border outline-none appearance-none bg-white">
                                 <option value="right">Right</option>
                                 <option value="left">Left</option>
                                 <option value="both">Both (Ambidextrous)</option>
@@ -195,11 +204,11 @@
                         <div class="flex items-center space-x-6 pt-8">
                             <label class="text-sm font-semibold text-gray-700">Is the child presently studying?</label>
                             <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" id="studentStudyingYes" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition">
+                                <input type="checkbox" id="childStudyingYes" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition">
                                 <span class="text-sm font-medium text-gray-700">Yes</span>
                             </label>
                             <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" id="studentStudyingNo" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition">
+                                <input type="checkbox" id="childStudyingNo" class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 transition">
                                 <span class="text-sm font-medium text-gray-700">No</span>
                             </label>
                         </div>
@@ -207,7 +216,7 @@
 
                     <div id="schoolNameField" class="space-y-2 hidden">
                         <label class="text-sm font-semibold text-gray-700">School / Learning Center / Day Care</label>
-                        <input type="text" id="studentSchool" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="School name">
+                        <input type="text" id="childSchool" class="w-full border-gray-200 rounded-xl p-3 focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition outline-none border" placeholder="School name">
                     </div>
                 </div>
 
@@ -248,7 +257,7 @@
                 </div>
 
                 <div class="space-y-4">
-                    <label class="text-sm font-semibold text-gray-700">Student Photo Identification</label>
+                    <label class="text-sm font-semibold text-gray-700">Child Photo Identification</label>
                     <div class="flex items-center space-x-6">
                         <div class="flex-shrink-0">
                             <div class="w-32 h-32 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden">
@@ -292,6 +301,7 @@
                             <div><p class="text-xs text-gray-500 uppercase">First Name</p><p id="reviewGuardianFirst" class="font-semibold text-gray-800">-</p></div>
                             <div><p class="text-xs text-gray-500 uppercase">Middle Name</p><p id="reviewGuardianMiddle" class="font-semibold text-gray-800">-</p></div>
                             <div><p class="text-xs text-gray-500 uppercase">Last Name</p><p id="reviewGuardianLast" class="font-semibold text-gray-800">-</p></div>
+                            <div><p class="text-xs text-gray-500 uppercase">Sex</p><p id="reviewGuardianSex" class="font-semibold text-gray-800">-</p></div>
                             <div><p class="text-xs text-gray-500 uppercase">Contact Number</p><p id="reviewGuardianContact" class="font-semibold text-gray-800">-</p></div>
                             <div><p class="text-xs text-gray-500 uppercase">Relationship</p><p id="reviewGuardianRelation" class="font-semibold text-gray-800">-</p></div>
                         </div>
@@ -303,29 +313,29 @@
                         </div>
                     </div>
 
-                    <!-- Student Details -->
+                    <!-- Child Details -->
                     <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                        <h3 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">Student Profile</h3>
-                        
+                        <h3 class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-6">Child Profile</h3>
+
                         <div class="flex flex-col md:flex-row gap-8">
                             <img id="reviewPhoto" src="" alt="Preview" class="hidden w-32 h-32 rounded-xl object-cover border-4 border-white shadow-sm bg-gray-200">
                             <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-4">
                                 <div class="col-span-2">
                                     <p class="text-xs text-gray-500 uppercase">Full Name</p>
-                                    <p class="font-semibold text-gray-800"><span id="reviewStudentFirst"></span> <span id="reviewStudentMiddle"></span> <span id="reviewStudentLast"></span></p>
+                                    <p class="font-semibold text-gray-800"><span id="reviewChildFirst"></span> <span id="reviewChildMiddle"></span> <span id="reviewChildLast"></span></p>
                                 </div>
-                                <div><p class="text-xs text-gray-500 uppercase">Sex</p><p id="reviewStudentSex" class="font-semibold text-gray-800">-</p></div>
-                                <div><p class="text-xs text-gray-500 uppercase">Date of Birth</p><p id="reviewStudentDob" class="font-semibold text-gray-800">-</p></div>
-                                
-                                <!-- Student Address Review -->
-                                <div><p class="text-xs text-gray-500 uppercase">Barangay</p><p id="reviewStudentBarangay" class="font-semibold text-gray-800">-</p></div>
-                                <div><p class="text-xs text-gray-500 uppercase">Municipality/City</p><p id="reviewStudentMunicipality" class="font-semibold text-gray-800">-</p></div>
-                                <div><p class="text-xs text-gray-500 uppercase">Province</p><p id="reviewStudentProvince" class="font-semibold text-gray-800">-</p></div>
-                                <div><p class="text-xs text-gray-500 uppercase">Region</p><p id="reviewStudentRegion" class="font-semibold text-gray-800">-</p></div>
+                                <div><p class="text-xs text-gray-500 uppercase">Sex</p><p id="reviewChildSex" class="font-semibold text-gray-800">-</p></div>
+                                <div><p class="text-xs text-gray-500 uppercase">Date of Birth</p><p id="reviewChildDob" class="font-semibold text-gray-800">-</p></div>
 
-                                <div><p class="text-xs text-gray-500 uppercase">Handedness</p><p id="reviewStudentHandedness" class="font-semibold text-gray-800">-</p></div>
-                                <div><p class="text-xs text-gray-500 uppercase">Currently Studying</p><p id="reviewStudentIsStudying" class="font-semibold text-gray-800">-</p></div>
-                                <div><p class="text-xs text-gray-500 uppercase">School Name</p><p id="reviewStudentSchool" class="font-semibold text-gray-800">-</p></div>
+                                <!-- Child Address Review -->
+                                <div><p class="text-xs text-gray-500 uppercase">Barangay</p><p id="reviewChildBarangay" class="font-semibold text-gray-800">-</p></div>
+                                <div><p class="text-xs text-gray-500 uppercase">Municipality/City</p><p id="reviewChildMunicipality" class="font-semibold text-gray-800">-</p></div>
+                                <div><p class="text-xs text-gray-500 uppercase">Province</p><p id="reviewChildProvince" class="font-semibold text-gray-800">-</p></div>
+                                <div><p class="text-xs text-gray-500 uppercase">Region</p><p id="reviewChildRegion" class="font-semibold text-gray-800">-</p></div>
+
+                                <div><p class="text-xs text-gray-500 uppercase">Handedness</p><p id="reviewChildHandedness" class="font-semibold text-gray-800">-</p></div>
+                                <div><p class="text-xs text-gray-500 uppercase">Currently Studying</p><p id="reviewChildIsStudying" class="font-semibold text-gray-800">-</p></div>
+                                <div><p class="text-xs text-gray-500 uppercase">School Name</p><p id="reviewChildSchool" class="font-semibold text-gray-800">-</p></div>
                             </div>
                         </div>
 
@@ -448,8 +458,8 @@
     });
 
     // Studying Toggle
-    const yesBox = document.getElementById('studentStudyingYes');
-    const noBox = document.getElementById('studentStudyingNo');
+    const yesBox = document.getElementById('childStudyingYes');
+    const noBox = document.getElementById('childStudyingNo');
     const schoolField = document.getElementById('schoolNameField');
 
     yesBox?.addEventListener('change', () => {
@@ -472,6 +482,7 @@
             guardianFirst: "reviewGuardianFirst",
             guardianMiddle: "reviewGuardianMiddle",
             guardianLast: "reviewGuardianLast",
+            guardianSex: "reviewGuardianSex",
             guardianContact: "reviewGuardianContact",
             guardianRelation: "reviewGuardianRelation",
             guardianBarangay: "reviewGuardianBarangay",
@@ -480,17 +491,17 @@
             guardianRegion: "reviewGuardianRegion",
             guardianEmail: "reviewGuardianEmail",
 
-            studentFirst: "reviewStudentFirst",
-            studentMiddle: "reviewStudentMiddle",
-            studentLast: "reviewStudentLast",
-            studentSex: "reviewStudentSex",
-            studentDob: "reviewStudentDob",
-            studentBarangay: "reviewStudentBarangay",
-            studentMunicipality: "reviewStudentMunicipality",
-            studentProvince: "reviewStudentProvince",
-            studentRegion: "reviewStudentRegion",
-            studentHandedness: "reviewStudentHandedness",
-            studentSchool: "reviewStudentSchool",
+            childFirst: "reviewChildFirst",
+            childMiddle: "reviewChildMiddle",
+            childLast: "reviewChildLast",
+            childSex: "reviewChildSex",
+            childDob: "reviewChildDob",
+            childBarangay: "reviewChildBarangay",
+            childMunicipality: "reviewChildMunicipality",
+            childProvince: "reviewChildProvince",
+            childRegion: "reviewChildRegion",
+            childHandedness: "reviewChildHandedness",
+            childSchool: "reviewChildSchool",
             fatherName: "reviewFatherName",
             fatherAge: "reviewFatherAge",
             fatherOccupation: "reviewFatherOccupation",
@@ -510,7 +521,7 @@
         });
 
         // Studying Status
-        const reviewStudying = document.getElementById('reviewStudentIsStudying');
+        const reviewStudying = document.getElementById('reviewChildIsStudying');
         if (reviewStudying) {
             reviewStudying.textContent = yesBox?.checked ? 'Yes' : (noBox?.checked ? 'No' : '-');
         }

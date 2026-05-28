@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Student extends Model
+class Child extends Model
 {
     use HasFactory, SoftDeletes;
+
+    // 👇 Explicitly set the table name to match your migration
+    protected $table = 'childs';
 
     protected $fillable = [
         'guardian_id',
@@ -34,6 +37,7 @@ class Student extends Model
         'photo_path',
     ];
 
+    // Relationships
     public function guardian()
     {
         return $this->belongsTo(Guardian::class);

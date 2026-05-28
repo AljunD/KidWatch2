@@ -37,10 +37,10 @@
             <span>Guardians</span>
         </a>
 
-        <!-- Students -->
-        <a href="/students" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+        <!-- Children -->
+        <a href="/children" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
           <i class="fas fa-user-graduate text-blue-500"></i>
-          <span>Students</span>
+          <span>Children</span>
         </a>
 
         <!-- Progress -->

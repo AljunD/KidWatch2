@@ -4,23 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PersonalAccessToken extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    // Explicit table name to match migration
+    protected $table = 'personal_access_tokens';
 
     protected $fillable = [
         'tokenable_type',
         'tokenable_id',
         'name',
         'token',
+        'abilities',
         'last_used_at',
         'expires_at',
     ];
 
-    public function user()
+    /**
+     * Relationships
+     */
+
+    // Polymorphic relation: token belongs to any authenticatable model
+    public function tokenable()
     {
-        return $this->belongsTo(User::class, 'tokenable_id');
+        return $this->morphTo();
     }
 }
