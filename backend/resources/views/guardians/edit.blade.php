@@ -166,7 +166,7 @@
         formContainer.classList.add('hidden');
 
         // Simulate outcome (replace with actual AJAX/fetch in production)
-        const isSuccess = false; // toggle this for preview
+        const isSuccess = true; // toggle this for preview
 
         if (isSuccess) {
             successMessage.classList.remove('hidden');

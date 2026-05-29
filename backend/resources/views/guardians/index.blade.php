@@ -104,6 +104,11 @@
                                    class="px-4 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-semibold hover:bg-purple-200 transition">
                                     Link Child
                                 </a>
+                                <a href="{{ route('child.archive.view') }}" 
+                                class="px-4 py-2 bg-red-100 text-red-700 rounded-lg text-sm font-semibold hover:bg-red-200 transition"
+                                title="Unlink Child">
+                                    Unlink Child
+                                </a>
                                 <!-- Archive Guardian (Soft Delete) -->
                                 <button type="button" id="archiveBtn"
                                         class="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-lg text-sm font-semibold hover:bg-yellow-200 transition"

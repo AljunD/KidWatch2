@@ -37,13 +37,6 @@ class GuardianController extends Controller
                          ->with('success', 'Guardian created (static placeholder).');
 
         // Later: validate and save
-        // $data = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'contact_number' => 'required|string|max:20',
-        //     'address' => 'required|string|max:255',
-        //     'email' => 'required|email|unique:guardians,email',
-        // ]);
-        // Guardian::create($data);
     }
 
     /**
@@ -78,14 +71,6 @@ class GuardianController extends Controller
                          ->with('success', 'Guardian updated (static placeholder).');
 
         // Later: validate and update
-        // $data = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'contact_number' => 'required|string|max:20',
-        //     'address' => 'required|string|max:255',
-        //     'email' => 'required|email|unique:guardians,email,' . $id,
-        // ]);
-        // $guardian = Guardian::findOrFail($id);
-        // $guardian->update($data);
     }
 
     /**
@@ -98,9 +83,8 @@ class GuardianController extends Controller
                          ->with('success', 'Guardian soft deleted (static placeholder).');
 
         // Later: soft delete
-        // $guardian = Guardian::findOrFail($id);
-        // $guardian->delete(); // with SoftDeletes trait, this sets deleted_at
     }
+
     /**
      * Show the form for creating a child linked to the specified guardian.
      */
@@ -111,5 +95,14 @@ class GuardianController extends Controller
 
         // Later: $guardian = Guardian::findOrFail($id);
         // return view('guardians.create-child', compact('guardian'));
+    }
+
+    /**
+     * Show the archive child preview page.
+     */
+    public function archiveChild()
+    {
+        // Static preview page
+        return view('guardians.archive-child');
     }
 }

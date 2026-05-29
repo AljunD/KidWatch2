@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" 
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>@yield('title', 'KidWatch')</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+  <link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Reuse Inter font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" 
+        rel="stylesheet">
 </head>
-<body class="bg-[#f4f7fe] font-[Inter]">
+<body class="bg-[#f4f7fe] font-[Inter] h-screen overflow-hidden">
 
-  <div class="flex min-h-screen">
+  <div class="flex h-screen">
     <!-- Sidebar -->
     <aside id="sidebar"
            class="fixed inset-y-0 left-0 z-50 w-72 bg-[#081028] shadow-2xl flex flex-col 
@@ -25,37 +27,27 @@
       </div>
 
       <nav class="flex-1 px-4 py-2 space-y-2 overflow-y-auto">
-        <!-- Dashboard -->
+        <!-- links -->
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
           <i class="fas fa-tachometer-alt text-blue-500"></i>
           <span>Dashboard</span>
         </a>
-
-        <!-- Guardians -->
         <a href="{{ route('guardians.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
-            <i class="fas fa-users text-blue-500"></i>
-            <span>Guardians</span>
+          <i class="fas fa-users text-blue-500"></i>
+          <span>Guardians</span>
         </a>
-
-        <!-- Children -->
-        <a href="/children" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+        <a href="{{ route('childs.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
           <i class="fas fa-user-graduate text-blue-500"></i>
           <span>Children</span>
         </a>
-
-        <!-- Progress -->
         <a href="/progress" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
           <i class="fas fa-chart-line text-blue-500"></i>
           <span>Progress</span>
         </a>
-
-        <!-- System Logs -->
         <a href="/logs" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
           <i class="fas fa-clipboard-list text-blue-500"></i>
           <span>System Logs</span>
         </a>
-
-        <!-- Archive -->
         <a href="/archive" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
           <i class="fas fa-box-archive text-blue-500"></i>
           <span>Archive</span>
@@ -83,7 +75,8 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col min-w-0">
+    <div class="flex-1 flex flex-col min-w-0 h-screen">
+      <!-- Mobile Header -->
       <div class="lg:hidden bg-white border-b border-slate-200 px-5 py-4 flex items-center justify-between sticky top-0 z-40 shadow-sm">
         <button onclick="toggleSidebar()" class="text-[#081028] p-2 -ml-2 rounded-xl hover:bg-slate-50">
           <i class="fas fa-bars text-2xl"></i>
@@ -94,7 +87,8 @@
         </div>
       </div>
 
-      <main class="flex-1 p-6 md:p-8 lg:p-10 overflow-auto">
+      <!-- Scrollable Content -->
+      <main class="flex-1 p-6 md:p-8 lg:p-10 overflow-y-auto">
         @yield('content')
       </main>
     </div>
