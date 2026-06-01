@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Archive Button Simulation
+    // Archive Button Simulation with Confirmation
     const tableContainer = document.getElementById('table-container');
     const successMessage = document.getElementById('success-message');
     const failedMessage = document.getElementById('failed-message');
@@ -167,8 +167,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (archiveBtn) {
         archiveBtn.addEventListener('click', () => {
+            // Confirmation dialog
+            const confirmed = confirm("Are you sure you want to archive this guardian and all linked children?");
+            if (!confirmed) return; // stop if user cancels
+
+            // Hide table
             tableContainer.classList.add('hidden');
 
+            // Simulate archive result
             const isSuccess = true; // <-- set false to test failed
             if (isSuccess) {
                 successMessage.classList.remove('hidden');
@@ -183,4 +189,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
+
 @endsection

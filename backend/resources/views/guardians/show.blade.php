@@ -4,6 +4,15 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto my-10 px-4">
+    <div class="mb-6">
+        <a href="{{ route('guardians.index') }}" 
+           class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back to Guardians
+        </a>
+    </div>
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
             <nav class="flex mb-2" aria-label="Breadcrumb">
@@ -17,11 +26,6 @@
         </div>
         
         <div class="flex items-center gap-3">
-            <a href="{{ route('guardians.index') }}" 
-               class="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-200 transition shadow-sm flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Back to List
-            </a>
             <a href="{{ route('guardians.edit', 1) }}" 
                class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition shadow-sm flex items-center">
                 <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>

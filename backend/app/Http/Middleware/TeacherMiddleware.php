@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\Auth;
+
+class TeacherMiddleware
+{
+    /**
+     * Handle an incoming request.
+     */
+    public function handle($request, Closure $next)
+    {
+        if (!Auth::check() || Auth::user()->role !== 'teacher') {
+            abort(403, 'Unauthorized access. Teachers only.');
+        }
+
+        return $next($request);
+    }
+}

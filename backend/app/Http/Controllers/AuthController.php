@@ -37,7 +37,7 @@ class AuthController extends Controller
             'password'          => 'required|string|min:8|confirmed',
         ]);
 
-        // Create user account
+        // Create user account (teacher role only for web)
         $user = User::create([
             'email'    => $request->email,
             'password' => Hash::make($request->password),
@@ -85,7 +85,17 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            if (!Auth::user()->hasVerifiedEmail()) {
+            $user = Auth::user();
+
+            // Only teachers can use the web
+            if ($user->role !== 'teacher') {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Only teachers are allowed to access the web portal.',
+                ]);
+            }
+
+            if (!$user->hasVerifiedEmail()) {
                 Auth::logout();
                 return redirect()->route('verification.notice')
                     ->withErrors(['email' => 'You must verify your email before logging in.']);
@@ -108,7 +118,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('auth.login.form');
     }
 
     /**
@@ -162,7 +172,7 @@ class AuthController extends Controller
         );
 
         return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', 'Password reset successfully! You may now log in.')
+            ? redirect()->route('auth.login.form')->with('status', 'Password reset successfully! You may now log in.')
             : back()->withErrors(['email' => [__($status)]]);
     }
 

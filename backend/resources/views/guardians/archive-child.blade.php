@@ -4,6 +4,15 @@
 
 @section('content')
 <div class="max-w-5xl mx-auto my-12">
+    <div class="mb-6">
+        <a href="{{ route('guardians.index') }}" 
+           class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back to Guardians
+        </a>
+    </div>
     <div class="bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
         
         <!-- Header -->
@@ -71,14 +80,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- Cancel Button -->
-            <div class="mt-8 flex justify-end">
-                <a href="{{ route('guardians.index') }}" 
-                   class="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-300 transition">
-                    Back to Guardians
-                </a>
-            </div>
         </div>
     </div>
 </div>
@@ -91,6 +92,10 @@
     // Attach event listeners to all Archive buttons
     document.querySelectorAll('.archive-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+            // Confirmation dialog
+            const confirmed = confirm("Are you sure you want to archive this child record?");
+            if (!confirmed) return; // stop if user cancels
+
             // Hide the child list
             childList.classList.add('hidden');
 

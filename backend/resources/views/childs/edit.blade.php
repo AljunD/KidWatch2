@@ -200,10 +200,20 @@
     const failedMessage = document.getElementById('failed-message');
     const saveBtn = document.getElementById('saveBtn');
 
-    // Save Button Logic
+    // Update Profile Button Logic with confirmation
     saveBtn.addEventListener('click', () => {
+        const userConfirmed = confirm("Are you sure you want to update your profile?");
+        
+        if (!userConfirmed) {
+            alert("Update action was cancelled.");
+            return;
+        }
+
+        // Hide form
         formContainer.classList.add('hidden');
-        const isSuccess = true; 
+
+        // Simulate outcome (replace with actual AJAX/fetch in production)
+        const isSuccess = true; // toggle this for preview
 
         if (isSuccess) {
             successMessage.classList.remove('hidden');
@@ -212,6 +222,8 @@
             failedMessage.classList.remove('hidden');
             successMessage.classList.add('hidden');
         }
+
+        // Scroll to top for visibility
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 

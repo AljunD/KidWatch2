@@ -29,7 +29,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // TEACHERS
+        // TEACHERS + GUARDIANS + CHILDS (unchanged)
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained('users');
@@ -43,7 +43,6 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // GUARDIANS
         Schema::create('guardians', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained('users');
@@ -58,7 +57,6 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // CHILDS
         Schema::create('childs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('guardian_id')->constrained('guardians');
@@ -89,42 +87,48 @@ return new class extends Migration {
         // PROGRESS_RECORDS
         Schema::create('progress_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('child_id')->constrained('childs'); // back to child_id
+            $table->foreignId('child_id')->constrained('childs');
             $table->foreignId('teacher_id')->constrained('teachers');
-            $table->date('assessment_date');
-            $table->tinyInteger('assessment_number');
-            $table->enum('status', ['evaluation_pending','evaluation_completed','assessment_completed']);
+            $table->date('evaluation_date');
+            $table->tinyInteger('evaluation_number'); // 1, 2, or 3
+            $table->enum('status', ['pending','in_progress','completed']);
             $table->timestamps();
             $table->softDeletes();
         });
 
-        // DOMAINS
+        // DOMAINS - Master + Per-Evaluation
         Schema::create('domains', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('progress_record_id')->constrained('progress_records');
+            $table->foreignId('progress_record_id')
+                  ->nullable()                    // ← Crucial for master items
+                  ->constrained('progress_records')
+                  ->onDelete('cascade');
+            
             $table->enum('domain', [
-                'gross_motor','fine_motor','self_help',
-                'receptive_language','expressive_language',
-                'cognitive','social_emotional'
+                'gross_motor', 'fine_motor', 'self_help',
+                'receptive_language', 'expressive_language',
+                'cognitive', 'social_emotional'
             ]);
             $table->string('activity');
-            $table->string('materials_and_procedure')->nullable();
+            $table->text('materials_and_procedure')->nullable();
+            $table->string('item_number')->nullable(); // e.g., "GM-01"
+            $table->enum('status', ['pending','in_progress','completed'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        // DOMAIN_RESULTS
+        // DOMAIN_RESULTS (one per domain item per evaluation)
         Schema::create('domain_results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('domain_id')->constrained('domains');
-            $table->enum('present', ['check','hypen']); // updated enum
+            $table->enum('present', ['check','hyphen'])->default('hyphen');
             $table->text('comments')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
 
-        // DOMAIN_ASSESSMENTS
-        Schema::create('domain_assessments', function (Blueprint $table) {
+        // DOMAIN_EVALUATIONS (overall notes per progress record)
+        Schema::create('domain_evaluations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('progress_record_id')->unique()->constrained('progress_records');
             $table->text('place_administered')->nullable();
@@ -133,11 +137,12 @@ return new class extends Migration {
             $table->text('stimulating_activities_notes')->nullable();
             $table->text('home_environment_notes')->nullable();
             $table->text('other_notes')->nullable();
+            $table->enum('status', ['pending','in_progress','completed'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        // DOMAIN_SCORES
+        // DOMAIN_SCORES (per domain per evaluation)
         Schema::create('domain_scores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('progress_record_id')->constrained('progress_records');
@@ -154,7 +159,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // LOGS
+        // LOGS, TOKENS, CACHE (unchanged)
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
@@ -166,7 +171,6 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // PERSONAL_ACCESS_TOKENS
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
             $table->morphs('tokenable');
@@ -178,7 +182,6 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        // PASSWORD_RESET_TOKENS
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -186,7 +189,6 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // CACHE
         Schema::create('cache', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
@@ -202,17 +204,18 @@ return new class extends Migration {
 
     public function down(): void
     {
+        // Drop in reverse order...
         Schema::dropIfExists('cache_locks');
         Schema::dropIfExists('cache');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('personal_access_tokens');
         Schema::dropIfExists('logs');
         Schema::dropIfExists('domain_scores');
-        Schema::dropIfExists('domain_assessments');
+        Schema::dropIfExists('domain_evaluations');
         Schema::dropIfExists('domain_results');
         Schema::dropIfExists('domains');
         Schema::dropIfExists('progress_records');
-        Schema::dropIfExists('childs'); 
+        Schema::dropIfExists('childs');
         Schema::dropIfExists('guardians');
         Schema::dropIfExists('teachers');
         Schema::dropIfExists('users');

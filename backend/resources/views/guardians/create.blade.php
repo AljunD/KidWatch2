@@ -4,6 +4,15 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto my-10">
+    <div class="mb-6">
+        <a href="{{ route('guardians.index') }}" 
+           class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Back to Guardians
+        </a>
+    </div>
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         
         <!-- Header -->
@@ -409,8 +418,6 @@
 </div>
 
 <script>
-    // ... (JavaScript remains mostly the same, only minor cleanup)
-
     const steps = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
     const labels = [document.getElementById('label-step1'), document.getElementById('label-step2'), document.getElementById('label-step3')];
     const progressBar = document.getElementById('progress-bar');
@@ -425,9 +432,13 @@
         steps.forEach((step, i) => step.classList.toggle('hidden', i !== index));
 
         labels.forEach((label, i) => {
-            if (i === index) label.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-600 text-white shadow-sm transition-all duration-300";
-            else if (i < index) label.className = "text-xs font-bold uppercase tracking-wider text-blue-600 transition-all duration-300";
-            else label.className = "text-xs font-bold uppercase tracking-wider text-gray-400 transition-all duration-300";
+            if (i === index) {
+                label.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-600 text-white shadow-sm transition-all duration-300";
+            } else if (i < index) {
+                label.className = "text-xs font-bold uppercase tracking-wider text-blue-600 transition-all duration-300";
+            } else {
+                label.className = "text-xs font-bold uppercase tracking-wider text-gray-400 transition-all duration-300";
+            }
         });
     }
 
@@ -436,10 +447,17 @@
     document.getElementById('next2')?.addEventListener('click', () => { updateReview(); goToStep(3); });
     document.getElementById('back3')?.addEventListener('click', () => goToStep(2));
 
+    // Confirm and Save with confirmation message
     document.getElementById('saveBtn')?.addEventListener('click', () => {
-        formContainer.classList.add('hidden');
-        successMessage.classList.remove('hidden');
-        progressBar.style.width = '100%';
+        const userConfirmed = confirm("Are you sure you want to confirm and save this record?");
+        if (userConfirmed) {
+            formContainer.classList.add('hidden');
+            successMessage.classList.remove('hidden');
+            progressBar.style.width = '100%';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            alert("Save action was cancelled.");
+        }
     });
 
     // Photo Preview
@@ -527,4 +545,5 @@
         }
     }
 </script>
+
 @endsection

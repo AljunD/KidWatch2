@@ -2,6 +2,7 @@
 
 use Illuminate\Auth\Middleware\Authenticate;
 use App\Http\Middleware\ApiAuthenticate;
+use App\Http\Middleware\TeacherMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,9 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // Replace default Authenticate with our API-safe version
         $middleware->replace(Authenticate::class, ApiAuthenticate::class);
 
-        // Also rebind the 'auth' alias to point to ApiAuthenticate
+        // Aliases
         $middleware->alias([
-            'auth' => ApiAuthenticate::class,
+            'auth'    => ApiAuthenticate::class,
+            'teacher' => TeacherMiddleware::class, // ✅ Teacher-only middleware
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -162,6 +162,15 @@
     const updateBtn = document.getElementById('updateBtn');
 
     updateBtn.addEventListener('click', () => {
+        // Confirmation prompt
+        const userConfirmed = confirm("Are you sure you want to save these changes?");
+        
+        if (!userConfirmed) {
+            // User cancelled
+            alert("Save action was cancelled.");
+            return;
+        }
+
         // Hide form
         formContainer.classList.add('hidden');
 
@@ -180,5 +189,4 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 </script>
-
 @endsection

@@ -209,8 +209,12 @@
     const failedMessage = document.getElementById('failed-message');
     const saveBtn = document.getElementById('saveBtn');
 
-    // Save Button - Show Success or Failed Message
+    // Save Button - Show Success or Failed Message with Confirmation
     saveBtn.addEventListener('click', () => {
+        // Confirmation dialog
+        const confirmed = confirm("Are you sure you want to save this child record?");
+        if (!confirmed) return; // stop if user cancels
+
         // Hide form
         formContainer.classList.add('hidden');
 

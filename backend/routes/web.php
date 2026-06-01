@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuardianController;
+use App\Http\Controllers\ChildController;
+use App\Http\Controllers\ProgressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,20 +24,23 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('auth')->group(function () {
+    // Registration
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('auth.register.form');
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register.submit');
 
+    // Login
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('auth.login.form');
     Route::post('/login', [AuthController::class, 'login'])
         ->middleware('throttle:5,1')
         ->name('auth.login.submit');
 
+    // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
+    // Forgot / Reset Password
     Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('auth.password.request');
     Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('auth.password.email');
-
-    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('auth.password.reset');
     Route::post('/reset-password', [AuthController::class, 'reset'])->name('auth.password.update');
 });
 
@@ -63,19 +68,19 @@ Route::get('/email/confirmation', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Dashboard (Teacher-only)
 |--------------------------------------------------------------------------
 */
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'teacher'])->name('dashboard');
 
 /*
 |--------------------------------------------------------------------------
-| Guardians Routes (Grouped)
+| Guardians Routes (Teacher-only)
 |--------------------------------------------------------------------------
 */
-Route::prefix('guardians')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('guardians')->middleware(['auth', 'verified', 'teacher'])->group(function () {
     Route::get('/', [GuardianController::class, 'index'])->name('guardians.index');
     Route::get('/create', [GuardianController::class, 'create'])->name('guardians.create');
     Route::post('/', [GuardianController::class, 'store'])->name('guardians.store');
@@ -88,19 +93,19 @@ Route::prefix('guardians')->middleware(['auth', 'verified'])->group(function () 
 
 /*
 |--------------------------------------------------------------------------
-| Archive Child Flow (Preview Only)
+| Archive Child Flow (Static Preview)
 |--------------------------------------------------------------------------
 */
 Route::get('/child/archive', function () {
-    return view('guardians.archive-child'); 
-})->middleware(['auth', 'verified'])->name('child.archive.view');
+    return view('guardians.archive-child');
+})->middleware(['auth', 'verified', 'teacher'])->name('child.archive.view');
 
 /*
 |--------------------------------------------------------------------------
-| Children Routes (Grouped, Static Preview Only)
+| Children Routes (Static Preview)
 |--------------------------------------------------------------------------
 */
-Route::prefix('childs')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('childs')->middleware(['auth', 'verified', 'teacher'])->group(function () {
     Route::get('/', function () {
         return view('childs.index'); 
     })->name('childs.index');
@@ -113,24 +118,43 @@ Route::prefix('childs')->middleware(['auth', 'verified'])->group(function () {
         return view('childs.edit'); 
     })->name('childs.edit');
 });
+
 /*
 |--------------------------------------------------------------------------
-| Progress Routes
+| Progress Routes (Static Preview)
 |--------------------------------------------------------------------------
 */
-Route::prefix('progress')->middleware(['auth', 'verified'])->group(function () {
-    // Index page
+Route::prefix('progress')->middleware(['auth','verified','teacher'])->group(function () {
     Route::get('/', function () {
-        return view('progress.index'); // resources/views/progress/index.blade.php
+        return view('progress.index');
     })->name('progress.index');
 
-    // Show specific progress record (static example)
+    Route::get('/select-domain', function () {
+        return view('progress.select-domain');
+    })->name('progress.select-domain');
+
+    Route::get('/create', function () {
+        return view('progress.create');
+    })->name('progress.create');
+
     Route::get('/show', function () {
-        return view('progress.show'); // resources/views/progress/show.blade.php
+        return view('progress.show');
     })->name('progress.show');
-    
-        // Edit progress record (static example)
+
     Route::get('/edit', function () {
-        return view('progress.edit'); // resources/views/progress/edit.blade.php
+        return view('progress.edit');
     })->name('progress.edit');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Static System Logs & Archive (placeholders)
+|--------------------------------------------------------------------------
+*/
+Route::get('/logs', function () {
+    return view('logs.index'); // placeholder view
+})->middleware(['auth','verified','teacher'])->name('logs.static');
+
+Route::get('/archive', function () {
+    return view('archive.index'); // placeholder view
+})->middleware(['auth','verified','teacher'])->name('archive.static');
