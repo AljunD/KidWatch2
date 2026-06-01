@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ChildController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ArchiveController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +94,16 @@ Route::prefix('guardians')->middleware(['auth', 'verified', 'teacher'])->group(f
 
 /*
 |--------------------------------------------------------------------------
+| Archives (Teacher-only, soft delete + restore)
+|--------------------------------------------------------------------------
+*/
+Route::prefix('archive')->middleware(['auth', 'verified', 'teacher'])->group(function () {
+    Route::get('/', [ArchiveController::class, 'index'])->name('archives.index');
+    Route::patch('/{id}/restore', [ArchiveController::class, 'restore'])->name('guardians.restore');
+});
+
+/*
+|--------------------------------------------------------------------------
 | Archive Child Flow (Static Preview)
 |--------------------------------------------------------------------------
 */
@@ -148,13 +159,9 @@ Route::prefix('progress')->middleware(['auth','verified','teacher'])->group(func
 
 /*
 |--------------------------------------------------------------------------
-| Static System Logs & Archive (placeholders)
+| Static System Logs (placeholder)
 |--------------------------------------------------------------------------
 */
 Route::get('/logs', function () {
     return view('logs.index'); // placeholder view
 })->middleware(['auth','verified','teacher'])->name('logs.static');
-
-Route::get('/archive', function () {
-    return view('archive.index'); // placeholder view
-})->middleware(['auth','verified','teacher'])->name('archive.static');

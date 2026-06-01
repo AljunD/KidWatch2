@@ -12,11 +12,10 @@ class GuardianController extends Controller
      */
     public function index()
     {
-        // Static view for now
-        return view('guardians.index');
+        // Fetch guardians with linked children, paginated
+        $guardians = Guardian::with('childs')->paginate(10);
 
-        // Later: $guardians = Guardian::all();
-        // return view('guardians.index', compact('guardians'));
+        return view('guardians.index', compact('guardians'));
     }
 
     /**
@@ -32,11 +31,20 @@ class GuardianController extends Controller
      */
     public function store(Request $request)
     {
-        // Static placeholder
-        return redirect()->route('guardians.index')
-                         ->with('success', 'Guardian created (static placeholder).');
+        $data = $request->validate([
+            'first_name'             => 'required|string|max:255',
+            'middle_name'            => 'nullable|string|max:255',
+            'last_name'              => 'required|string|max:255',
+            'sex'                    => 'required|string|max:10',
+            'contact_number'         => 'required|string|max:20',
+            'address'                => 'required|string|max:500',
+            'relationship_to_child'  => 'required|string|max:255',
+        ]);
 
-        // Later: validate and save
+        Guardian::create($data);
+
+        return redirect()->route('guardians.index')
+                         ->with('success', 'Guardian created successfully.');
     }
 
     /**
@@ -44,10 +52,8 @@ class GuardianController extends Controller
      */
     public function show($id)
     {
-        return view('guardians.show');
-
-        // Later: $guardian = Guardian::findOrFail($id);
-        // return view('guardians.show', compact('guardian'));
+        $guardian = Guardian::with('childs')->findOrFail($id);
+        return view('guardians.show', compact('guardian'));
     }
 
     /**
@@ -55,10 +61,8 @@ class GuardianController extends Controller
      */
     public function edit($id)
     {
-        return view('guardians.edit');
-
-        // Later: $guardian = Guardian::findOrFail($id);
-        // return view('guardians.edit', compact('guardian'));
+        $guardian = Guardian::findOrFail($id);
+        return view('guardians.edit', compact('guardian'));
     }
 
     /**
@@ -66,23 +70,41 @@ class GuardianController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Static placeholder
-        return redirect()->route('guardians.index')
-                         ->with('success', 'Guardian updated (static placeholder).');
+        $guardian = Guardian::findOrFail($id);
 
-        // Later: validate and update
+        $data = $request->validate([
+            'first_name'             => 'required|string|max:255',
+            'middle_name'            => 'nullable|string|max:255',
+            'last_name'              => 'required|string|max:255',
+            'sex'                    => 'required|string|max:10',
+            'contact_number'         => 'required|string|max:20',
+            'address'                => 'required|string|max:500',
+            'relationship_to_child'  => 'required|string|max:255',
+        ]);
+
+        $guardian->update($data);
+
+        return redirect()->route('guardians.index')
+                         ->with('success', 'Guardian updated successfully.');
     }
 
     /**
-     * Soft delete the specified guardian.
+     * Soft delete the specified guardian and linked user.
      */
     public function destroy($id)
     {
-        // Static placeholder
-        return redirect()->route('guardians.index')
-                         ->with('success', 'Guardian soft deleted (static placeholder).');
+        $guardian = Guardian::findOrFail($id);
 
-        // Later: soft delete
+        // Soft delete the guardian
+        $guardian->delete();
+
+        // Soft delete the linked user account
+        if ($guardian->user) {
+            $guardian->user->delete();
+        }
+
+        return redirect()->route('guardians.index')
+                         ->with('success', 'Guardian and linked user archived successfully.');
     }
 
     /**
@@ -90,19 +112,15 @@ class GuardianController extends Controller
      */
     public function createChild($id)
     {
-        // Static placeholder
-        return view('guardians.create-child');
-
-        // Later: $guardian = Guardian::findOrFail($id);
-        // return view('guardians.create-child', compact('guardian'));
+        $guardian = Guardian::findOrFail($id);
+        return view('guardians.create-child', compact('guardian'));
     }
 
     /**
-     * Show the archive child preview page.
+     * Show the archive child preview page (static).
      */
     public function archiveChild()
     {
-        // Static preview page
         return view('guardians.archive-child');
     }
 }

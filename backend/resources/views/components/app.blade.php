@@ -49,7 +49,7 @@
           <i class="fas fa-clipboard-list text-blue-500"></i>
           <span>System Logs</span>
         </a>
-        <a href="/archive" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+        <a href="{{ route('archives.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
           <i class="fas fa-box-archive text-blue-500"></i>
           <span>Archive</span>
         </a>
