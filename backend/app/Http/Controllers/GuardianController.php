@@ -12,7 +12,6 @@ class GuardianController extends Controller
      */
     public function index()
     {
-        // Fetch guardians with linked children, paginated
         $guardians = Guardian::with('childs')->paginate(10);
 
         return view('guardians.index', compact('guardians'));
@@ -41,7 +40,10 @@ class GuardianController extends Controller
             'relationship_to_child'  => 'required|string|max:255',
         ]);
 
-        Guardian::create($data);
+        $guardian = Guardian::create($data);
+
+        // Log creation
+        recordLog('created', 'Guardian', $guardian->id, 'Guardian created: ' . $guardian->first_name . ' ' . $guardian->last_name);
 
         return redirect()->route('guardians.index')
                          ->with('success', 'Guardian created successfully.');
@@ -53,6 +55,7 @@ class GuardianController extends Controller
     public function show($id)
     {
         $guardian = Guardian::with('childs')->findOrFail($id);
+
         return view('guardians.show', compact('guardian'));
     }
 
@@ -62,6 +65,7 @@ class GuardianController extends Controller
     public function edit($id)
     {
         $guardian = Guardian::findOrFail($id);
+
         return view('guardians.edit', compact('guardian'));
     }
 
@@ -84,6 +88,9 @@ class GuardianController extends Controller
 
         $guardian->update($data);
 
+        // Log update
+        recordLog('updated', 'Guardian', $guardian->id, 'Guardian updated: ' . $guardian->first_name . ' ' . $guardian->last_name);
+
         return redirect()->route('guardians.index')
                          ->with('success', 'Guardian updated successfully.');
     }
@@ -95,13 +102,14 @@ class GuardianController extends Controller
     {
         $guardian = Guardian::findOrFail($id);
 
-        // Soft delete the guardian
         $guardian->delete();
 
-        // Soft delete the linked user account
         if ($guardian->user) {
             $guardian->user->delete();
         }
+
+        // Log deletion
+        recordLog('deleted', 'Guardian', $guardian->id, 'Guardian archived: ' . $guardian->first_name . ' ' . $guardian->last_name);
 
         return redirect()->route('guardians.index')
                          ->with('success', 'Guardian and linked user archived successfully.');
@@ -113,6 +121,7 @@ class GuardianController extends Controller
     public function createChild($id)
     {
         $guardian = Guardian::findOrFail($id);
+
         return view('guardians.create-child', compact('guardian'));
     }
 

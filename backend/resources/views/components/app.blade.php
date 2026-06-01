@@ -25,38 +25,40 @@
         <h1 class="text-xl font-black tracking-widest text-white uppercase">KidWatch</h1>
       </div>
 
-      {{-- Only teachers can see navigation --}}
-      @if(Auth::check() && Auth::user()->role === 'teacher')
-      <nav class="flex-1 px-4 py-2 space-y-2 overflow-y-auto">
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
-          <i class="fas fa-tachometer-alt text-blue-500"></i>
-          <span>Dashboard</span>
-        </a>
-        <a href="{{ route('guardians.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
-          <i class="fas fa-users text-blue-500"></i>
-          <span>Guardians</span>
-        </a>
-        <a href="{{ route('childs.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
-          <i class="fas fa-user-graduate text-blue-500"></i>
-          <span>Children</span>
-        </a>
-        <a href="{{ route('progress.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
-          <i class="fas fa-chart-line text-blue-500"></i>
-          <span>Progress</span>
-        </a>
-        <!-- Static links for now -->
-        <a href="/logs" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
-          <i class="fas fa-clipboard-list text-blue-500"></i>
-          <span>System Logs</span>
-        </a>
-        <a href="{{ route('archives.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
-          <i class="fas fa-box-archive text-blue-500"></i>
-          <span>Archive</span>
-        </a>
-      </nav>
-      @endif
+      {{-- Teacher-only navigation --}}
+      @auth
+        @if(Auth::user()->role === 'teacher')
+        <nav class="flex-1 px-4 py-2 space-y-2 overflow-y-auto">
+          <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fas fa-tachometer-alt text-blue-500"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="{{ route('guardians.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fas fa-users text-blue-500"></i>
+            <span>Guardians</span>
+          </a>
+          <a href="{{ route('childs.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fas fa-user-graduate text-blue-500"></i>
+            <span>Children</span>
+          </a>
+          <a href="{{ route('progress.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fas fa-chart-line text-blue-500"></i>
+            <span>Progress</span>
+          </a>
+          <a href="{{ route('archives.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fas fa-box-archive text-blue-500"></i>
+            <span>Archives</span>
+          </a>
+          <a href="{{ route('logs.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-slate-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fas fa-clipboard-list text-blue-500"></i>
+            <span>System Logs</span>
+          </a>
+        </nav>
+        @endif
+      @endauth
 
       <div class="p-6 border-t border-white/5 mt-auto">
+        @auth
         <div class="flex items-center gap-3 bg-white/5 p-3 rounded-2xl border border-white/5">
           <div class="w-9 h-9 bg-white text-[#081028] rounded-full flex items-center justify-center font-bold shadow-md text-xs">
             {{ strtoupper(substr(Auth::user()->teacher->first_name ?? Auth::user()->email, 0, 2)) }}
@@ -77,6 +79,7 @@
             </button>
           </form>
         </div>
+        @endauth
       </div>
     </aside>
 
@@ -88,9 +91,11 @@
           <i class="fas fa-bars text-2xl"></i>
         </button>
         <h1 class="text-lg font-black text-[#081028] uppercase tracking-tighter">KidWatch</h1>
+        @auth
         <div class="w-8 h-8 bg-[#081028] text-white rounded-full flex items-center justify-center font-bold text-[10px]">
           {{ strtoupper(substr(Auth::user()->teacher->first_name ?? Auth::user()->email, 0, 2)) }}
         </div>
+        @endauth
       </div>
 
       <!-- Scrollable Content -->

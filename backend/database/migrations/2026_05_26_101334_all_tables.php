@@ -29,7 +29,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // TEACHERS + GUARDIANS + CHILDS (unchanged)
+        // TEACHERS
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained('users');
@@ -43,6 +43,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
+        // GUARDIANS
         Schema::create('guardians', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained('users');
@@ -57,6 +58,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
+        // CHILDS
         Schema::create('childs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('guardian_id')->constrained('guardians');
@@ -90,34 +92,30 @@ return new class extends Migration {
             $table->foreignId('child_id')->constrained('childs');
             $table->foreignId('teacher_id')->constrained('teachers');
             $table->date('evaluation_date');
-            $table->tinyInteger('evaluation_number'); // 1, 2, or 3
+            $table->tinyInteger('evaluation_number');
             $table->enum('status', ['pending','in_progress','completed']);
             $table->timestamps();
             $table->softDeletes();
         });
 
-        // DOMAINS - Master + Per-Evaluation
+        // DOMAINS
         Schema::create('domains', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('progress_record_id')
-                  ->nullable()                    // ← Crucial for master items
-                  ->constrained('progress_records')
-                  ->onDelete('cascade');
-            
+            $table->foreignId('progress_record_id')->nullable()->constrained('progress_records')->onDelete('cascade');
             $table->enum('domain', [
-                'gross_motor', 'fine_motor', 'self_help',
-                'receptive_language', 'expressive_language',
-                'cognitive', 'social_emotional'
+                'gross_motor','fine_motor','self_help',
+                'receptive_language','expressive_language',
+                'cognitive','social_emotional'
             ]);
             $table->string('activity');
             $table->text('materials_and_procedure')->nullable();
-            $table->string('item_number')->nullable(); // e.g., "GM-01"
+            $table->string('item_number')->nullable();
             $table->enum('status', ['pending','in_progress','completed'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        // DOMAIN_RESULTS (one per domain item per evaluation)
+        // DOMAIN_RESULTS
         Schema::create('domain_results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('domain_id')->constrained('domains');
@@ -127,7 +125,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // DOMAIN_EVALUATIONS (overall notes per progress record)
+        // DOMAIN_EVALUATIONS
         Schema::create('domain_evaluations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('progress_record_id')->unique()->constrained('progress_records');
@@ -142,7 +140,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // DOMAIN_SCORES (per domain per evaluation)
+        // DOMAIN_SCORES
         Schema::create('domain_scores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('progress_record_id')->constrained('progress_records');
@@ -159,18 +157,22 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        // LOGS, TOKENS, CACHE (unchanged)
+        // LOGS
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null'); // if user is deleted, set null
             $table->string('action');
             $table->string('entity_type');
-            $table->unsignedBigInteger('entity_id');
+            $table->unsignedBigInteger('entity_id')->nullable();
             $table->text('details')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
 
+        // TOKENS
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
             $table->morphs('tokenable');
@@ -182,6 +184,7 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        // PASSWORD RESET TOKENS
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -189,6 +192,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
+        // CACHE
         Schema::create('cache', function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
@@ -204,7 +208,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        // Drop in reverse order...
         Schema::dropIfExists('cache_locks');
         Schema::dropIfExists('cache');
         Schema::dropIfExists('password_reset_tokens');

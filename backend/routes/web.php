@@ -7,6 +7,7 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ChildController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\LogsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,9 +160,9 @@ Route::prefix('progress')->middleware(['auth','verified','teacher'])->group(func
 
 /*
 |--------------------------------------------------------------------------
-| Static System Logs (placeholder)
+| System Logs (Teacher-only)
 |--------------------------------------------------------------------------
 */
-Route::get('/logs', function () {
-    return view('logs.index'); // placeholder view
-})->middleware(['auth','verified','teacher'])->name('logs.static');
+Route::get('/logs', [LogsController::class, 'index'])
+    ->middleware(['auth','verified','teacher'])
+    ->name('logs.index');

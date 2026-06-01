@@ -38,6 +38,9 @@ class ArchiveController extends Controller
                 $guardian->user->restore();
             }
 
+            // Log restore action
+            recordLog('restored', 'Guardian', $guardian->id, 'Guardian and linked user restored: ' . $guardian->first_name . ' ' . $guardian->last_name);
+
             return redirect()->route('archives.index')
                              ->with('success', 'Guardian and linked user restored successfully.');
         } catch (\Exception $e) {

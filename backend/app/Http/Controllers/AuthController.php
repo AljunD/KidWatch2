@@ -45,7 +45,7 @@ class AuthController extends Controller
         ]);
 
         // Create teacher profile linked to user
-        Teacher::create([
+        $teacher = Teacher::create([
             'user_id'        => $user->id,
             'first_name'     => $request->first_name,
             'middle_name'    => $request->middle_name,
@@ -54,11 +54,11 @@ class AuthController extends Controller
             'address'        => $request->address,
         ]);
 
-        // Fire Registered event → sends verification email
         event(new Registered($user));
-
-        // Log the user in so verification works
         Auth::login($user);
+
+        // Record log
+        recordLog('registered', 'Teacher', $teacher->id, 'Teacher account registered: ' . $teacher->first_name . ' ' . $teacher->last_name);
 
         return redirect()->route('verification.notice')
             ->with('success', 'Registration successful! Please verify your email.');
@@ -90,6 +90,7 @@ class AuthController extends Controller
             // Only teachers can use the web
             if ($user->role !== 'teacher') {
                 Auth::logout();
+                recordLog('login_denied', 'User', $user->id, 'Non-teacher attempted login: ' . $user->email);
                 return back()->withErrors([
                     'email' => 'Only teachers are allowed to access the web portal.',
                 ]);
@@ -97,12 +98,19 @@ class AuthController extends Controller
 
             if (!$user->hasVerifiedEmail()) {
                 Auth::logout();
+                recordLog('login_denied', 'User', $user->id, 'Unverified email attempted login: ' . $user->email);
                 return redirect()->route('verification.notice')
                     ->withErrors(['email' => 'You must verify your email before logging in.']);
             }
 
+            // Record successful login
+            recordLog('login', 'User', $user->id, 'Teacher logged in: ' . $user->email);
+
             return redirect()->intended('/dashboard');
         }
+
+        // Record failed login attempt
+        recordLog('login_failed', 'User', 0, 'Failed login attempt for email: ' . $request->email);
 
         return back()->withErrors([
             'email' => 'Invalid credentials provided.',
@@ -114,9 +122,18 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        // Capture user before logout
+        $user = Auth::user();
+        $userId = $user ? $user->id : null;
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        // Record log safely
+        if ($userId) {
+            recordLog('logout', 'User', $userId, 'Teacher logged out: ' . $user->email);
+        }
 
         return redirect()->route('auth.login.form');
     }
@@ -138,9 +155,12 @@ class AuthController extends Controller
 
         $status = Password::sendResetLink($request->only('email'));
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['success' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        if ($status === Password::RESET_LINK_SENT) {
+            recordLog('password_reset_link', 'User', 0, 'Password reset link sent to: ' . $request->email);
+            return back()->with(['success' => __($status)]);
+        }
+
+        return back()->withErrors(['email' => __($status)]);
     }
 
     /**
@@ -168,6 +188,8 @@ class AuthController extends Controller
                 $user->forceFill([
                     'password' => Hash::make($password),
                 ])->save();
+
+                recordLog('password_reset', 'User', $user->id, 'Password reset for: ' . $user->email);
             }
         );
 
@@ -181,17 +203,18 @@ class AuthController extends Controller
      */
     public function verify(EmailVerificationRequest $request)
     {
-        $request->fulfill(); // marks email_verified_at
+        $request->fulfill();
 
         $user = Auth::user();
 
-        // Send account details email (without plain password!)
         Mail::send('emails.account-details', [
             'user' => $user,
         ], function ($message) use ($user) {
             $message->to($user->email)
                     ->subject('Your KidWatch2 Account Details');
         });
+
+        recordLog('email_verified', 'User', $user->id, 'Email verified for: ' . $user->email);
 
         return redirect()->route('verification.confirmation');
     }
